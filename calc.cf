@@ -1,0 +1,34 @@
+Program. Prog ::= [Stm] ;
+
+InstrAss. Stm ::= StmAss ;
+--InstrIf.  Stm ::= StmIf ;
+
+SAssInt. StmAss ::= Ident ":=" ExpNum ;
+SAssStr. StmAss ::= Ident ":=" ExpStr ;
+
+EMinus.  ExpNum ::= "-" ExpNum ;
+
+EAdd. ExpNum  ::= ExpNum  "+" ExpNum1 ;
+ESub. ExpNum  ::= ExpNum  "-" ExpNum1 ;
+EMul. ExpNum1 ::= ExpNum1 "*" ExpNum2 ;
+EDiv. ExpNum1 ::= ExpNum1 "/" ExpNum2 ;
+EMod. ExpNum2 ::= ExpNum2 "%" ExpNum3 ;
+
+EInt.         ExpNum3 ::= Integer ;
+ENumVar.      ExpNum3 ::= Ident ;
+StmReadInt.   ExpNum3 ::= "readint" ;
+StmLength.    ExpNum3 ::= "length(" ExpStr ")" ;
+StmPosition.  ExpNum3 ::= "position(" ExpStr "," ExpStr ")" ;
+
+coercions ExpNum 3 ;
+
+--StmConcat.  ExpStr ::= "concatenate(" ExpStr "," ExpStr ")" ;
+--StmSubstr.  ExpStr ::= "substring(" ExpStr "," ExpNum "," ExpNum ")" ;
+EStr.       ExpStr ::= String ;
+--EStrVar.    ExpStr ::= Ident ;
+StmReadStr. ExpStr ::= "readstr" ;
+
+--separator Exp ",";
+--separator Stm "";
+
+separator Stm ";" ;
