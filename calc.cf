@@ -1,15 +1,12 @@
-Program. Prog ::= StmGrp ;
-
-StmList.        StmGrp ::= StmGrp ";" Stm ;
-StmListSingle.  StmGrp ::= Stm ;
+Program. Prog ::= [Stm] ;
 
 StmAssignInt.   Stm ::= Ident ":=" ExpNum ;
 StmAssignStr.   Stm ::= Ident ":=" ExpStr ;
-StmIfOne.       Stm ::= "if" ExpBool "then" Stm ;
-StmIfTwo.       Stm ::= "if" ExpBool "then" Stm "else" Stm ;
+StmIf.          Stm ::= "if" ExpBool "then" Stm ;
+StmIfElse.      Stm ::= "if" ExpBool "then" Stm "else" Stm ;
 StmWhileFirst.  Stm ::= "while" ExpBool "do" Stm ;
 StmWhileSecond. Stm ::= "do" Stm "while" ExpBool ;
-StmBlock.       Stm ::= "begin" StmGrp "end";
+StmBlock.       Stm ::= "begin" [Stm] "end";
 StmOutputNum.   Stm ::= "print(" ExpNum ")";
 StmOutputStr.   Stm ::= "print(" ExpStr ")";
 StmExit.        Stm ::= "exit" ;
@@ -50,3 +47,5 @@ TrueVal.      ExpBool3 ::= "true" ;
 FalseVal.     ExpBool3 ::= "false" ;
 
 coercions ExpBool 3 ;
+
+separator Stm ";" ;
