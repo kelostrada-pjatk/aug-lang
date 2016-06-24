@@ -1,0 +1,44 @@
+print("Simple Calculator!");
+
+while true do 
+begin
+  print("Choose operation: + - * / %");
+  op := readstr;
+
+  print("Input two numbers");
+  a := readint;
+  b := readint;
+
+  if op == "+" then
+  begin
+    c := a + b;
+    print("Result: ");
+    print(c)
+  end
+  else if op == "-" then
+  begin
+    c := a - b;
+    print("Result: ");
+    print(c)
+  end
+  else if op == "*" then
+  begin
+    c := a * b;
+    print("Result: ");
+    print(c)
+  end
+  else if op == "/" then
+  begin
+    c := a / b;
+    print("Result: ");
+    print(c)
+  end
+  else if op == "%" then
+  begin
+    c := a % b;
+    print("Result: ");
+    print(c)
+  end
+  else print("Unexpected operation")
+
+end

@@ -1,34 +1,52 @@
-Program. Prog ::= [Stm] ;
+Program. Prog ::= StmGrp ;
 
-InstrAss. Stm ::= StmAss ;
---InstrIf.  Stm ::= StmIf ;
+StmList.        StmGrp ::= StmGrp ";" Stm ;
+StmListSingle.  StmGrp ::= Stm ;
 
-SAssInt. StmAss ::= Ident ":=" ExpNum ;
-SAssStr. StmAss ::= Ident ":=" ExpStr ;
+StmAssignInt.   Stm ::= Ident ":=" ExpNum ;
+StmAssignStr.   Stm ::= Ident ":=" ExpStr ;
+StmIfOne.       Stm ::= "if" ExpBool "then" Stm ;
+StmIfTwo.       Stm ::= "if" ExpBool "then" Stm "else" Stm ;
+StmWhileFirst.  Stm ::= "while" ExpBool "do" Stm ;
+StmWhileSecond. Stm ::= "do" Stm "while" ExpBool ;
+StmBlock.       Stm ::= "begin" StmGrp "end";
+StmOutputNum.   Stm ::= "print(" ExpNum ")";
+StmOutputStr.   Stm ::= "print(" ExpStr ")";
+StmExit.        Stm ::= "exit" ;
 
-EMinus.  ExpNum ::= "-" ExpNum ;
+Eeq.          ExpBool3 ::= ExpNum "=" ExpNum1;
+Eneq.         ExpBool3 ::= ExpNum "<>" ExpNum1;
+Elt.          ExpBool3 ::= ExpNum1 "<" ExpNum2;
+Egt.          ExpBool3 ::= ExpNum1 ">" ExpNum2;
+Ele.          ExpBool3 ::= ExpNum1 "<=" ExpNum2;
+Ege.          ExpBool3 ::= ExpNum1 ">=" ExpNum2;
+EMinus.       ExpNum2 ::= "-" ExpNum2 ;
+EAdd.         ExpNum2 ::= ExpNum2 "+" ExpNum3 ;
+ESub.         ExpNum2 ::= ExpNum2 "-" ExpNum3 ;
+EMul.         ExpNum3 ::= ExpNum3 "*" ExpNum4 ;
+EDiv.         ExpNum3 ::= ExpNum3 "/" ExpNum4 ;
+EMod.         ExpNum4 ::= ExpNum4 "%" ExpNum5 ;
 
-EAdd. ExpNum  ::= ExpNum  "+" ExpNum1 ;
-ESub. ExpNum  ::= ExpNum  "-" ExpNum1 ;
-EMul. ExpNum1 ::= ExpNum1 "*" ExpNum2 ;
-EDiv. ExpNum1 ::= ExpNum1 "/" ExpNum2 ;
-EMod. ExpNum2 ::= ExpNum2 "%" ExpNum3 ;
+EInt.         ExpNum5 ::= Integer ;
+ENumVar.      ExpNum5 ::= Ident ;
+StmReadInt.   ExpNum5 ::= "readint" ;
+StmLength.    ExpNum5 ::= "length(" ExpStr ")" ;
+StmPosition.  ExpNum5 ::= "position(" ExpStr "," ExpStr ")" ;
 
-EInt.         ExpNum3 ::= Integer ;
-ENumVar.      ExpNum3 ::= Ident ;
-StmReadInt.   ExpNum3 ::= "readint" ;
-StmLength.    ExpNum3 ::= "length(" ExpStr ")" ;
-StmPosition.  ExpNum3 ::= "position(" ExpStr "," ExpStr ")" ;
+coercions ExpNum 5 ;
 
-coercions ExpNum 3 ;
+StmConcat.    ExpStr ::= "concatenate(" ExpStr "," ExpStr ")" ;
+StmSubstr.    ExpStr ::= "substring(" ExpStr "," ExpNum "," ExpNum ")" ;
+EStr.         ExpStr ::= String ;
+EStrVar.      ExpStr ::= Ident ;
+StmReadStr.   ExpStr ::= "readstr" ;
 
---StmConcat.  ExpStr ::= "concatenate(" ExpStr "," ExpStr ")" ;
---StmSubstr.  ExpStr ::= "substring(" ExpStr "," ExpNum "," ExpNum ")" ;
-EStr.       ExpStr ::= String ;
---EStrVar.    ExpStr ::= Ident ;
-StmReadStr. ExpStr ::= "readstr" ;
+OrExp.        ExpBool  ::= ExpBool "or" ExpBool1 ;
+AndExp.       ExpBool1 ::= ExpBool1 "and" ExpBool2 ;
+EStrEq.       ExpBool2 ::= ExpStr "==" ExpStr ;
+EStrNeq.      ExpBool2 ::= ExpStr "!=" ExpStr ;
+NotExp.       ExpBool3 ::= "not" ExpBool3 ;
+TrueVal.      ExpBool3 ::= "true" ;
+FalseVal.     ExpBool3 ::= "false" ;
 
---separator Exp ",";
---separator Stm "";
-
-separator Stm ";" ;
+coercions ExpBool 3 ;
