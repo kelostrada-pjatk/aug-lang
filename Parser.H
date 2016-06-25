@@ -7,6 +7,7 @@
 
 class Prog;
 class Stm;
+class Exp;
 class ExpNum;
 class ExpStr;
 class ExpBool;
@@ -20,6 +21,7 @@ typedef union
   char* string_;
   Prog* prog_;
   Stm* stm_;
+  Exp* exp_;
   ExpNum* expnum_;
   ExpStr* expstr_;
   ExpBool* expbool_;
@@ -30,6 +32,8 @@ Prog* pProg(FILE *inp);
 Prog* pProg(const char *str);
 Stm* pStm(FILE *inp);
 Stm* pStm(const char *str);
+Exp* pExp(FILE *inp);
+Exp* pExp(const char *str);
 ExpNum* pExpNum(FILE *inp);
 ExpNum* pExpNum(const char *str);
 ExpStr* pExpStr(FILE *inp);

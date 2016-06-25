@@ -226,27 +226,13 @@ void PrintAbsyn::visitStmBlock(StmBlock* p)
   _i_ = oldi;
 }
 
-void PrintAbsyn::visitStmOutputNum(StmOutputNum* p)
+void PrintAbsyn::visitStmOutput(StmOutput* p)
 {
   int oldi = _i_;
   if (oldi > 0) render(_L_PAREN);
 
   render("print(");
-  _i_ = 0; p->expnum_->accept(this);
-  render(')');
-
-  if (oldi > 0) render(_R_PAREN);
-
-  _i_ = oldi;
-}
-
-void PrintAbsyn::visitStmOutputStr(StmOutputStr* p)
-{
-  int oldi = _i_;
-  if (oldi > 0) render(_L_PAREN);
-
-  render("print(");
-  _i_ = 0; p->expstr_->accept(this);
+  _i_ = 0; p->exp_->accept(this);
   render(')');
 
   if (oldi > 0) render(_R_PAREN);
@@ -260,6 +246,32 @@ void PrintAbsyn::visitStmExit(StmExit* p)
   if (oldi > 0) render(_L_PAREN);
 
   render("exit");
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitExp(Exp*p) {} //abstract class
+
+void PrintAbsyn::visitExpIsNum(ExpIsNum* p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  _i_ = 0; p->expnum_->accept(this);
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitExpIsStr(ExpIsStr* p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  _i_ = 0; p->expstr_->accept(this);
 
   if (oldi > 0) render(_R_PAREN);
 
@@ -825,24 +837,13 @@ void ShowAbsyn::visitStmBlock(StmBlock* p)
   bufAppend(' ');
   bufAppend(')');
 }
-void ShowAbsyn::visitStmOutputNum(StmOutputNum* p)
+void ShowAbsyn::visitStmOutput(StmOutput* p)
 {
   bufAppend('(');
-  bufAppend("StmOutputNum");
+  bufAppend("StmOutput");
   bufAppend(' ');
   bufAppend('[');
-  if (p->expnum_)  p->expnum_->accept(this);
-  bufAppend(']');
-  bufAppend(' ');
-  bufAppend(')');
-}
-void ShowAbsyn::visitStmOutputStr(StmOutputStr* p)
-{
-  bufAppend('(');
-  bufAppend("StmOutputStr");
-  bufAppend(' ');
-  bufAppend('[');
-  if (p->expstr_)  p->expstr_->accept(this);
+  if (p->exp_)  p->exp_->accept(this);
   bufAppend(']');
   bufAppend(' ');
   bufAppend(')');
@@ -850,6 +851,28 @@ void ShowAbsyn::visitStmOutputStr(StmOutputStr* p)
 void ShowAbsyn::visitStmExit(StmExit* p)
 {
   bufAppend("StmExit");
+}
+void ShowAbsyn::visitExp(Exp* p) {} //abstract class
+
+void ShowAbsyn::visitExpIsNum(ExpIsNum* p)
+{
+  bufAppend('(');
+  bufAppend("ExpIsNum");
+  bufAppend(' ');
+  bufAppend('[');
+  if (p->expnum_)  p->expnum_->accept(this);
+  bufAppend(']');
+  bufAppend(')');
+}
+void ShowAbsyn::visitExpIsStr(ExpIsStr* p)
+{
+  bufAppend('(');
+  bufAppend("ExpIsStr");
+  bufAppend(' ');
+  bufAppend('[');
+  if (p->expstr_)  p->expstr_->accept(this);
+  bufAppend(']');
+  bufAppend(')');
 }
 void ShowAbsyn::visitExpBool(ExpBool* p) {} //abstract class
 

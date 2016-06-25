@@ -7,9 +7,11 @@ StmIfElse.      Stm ::= "if" ExpBool "then" Stm "else" Stm ;
 StmWhileFirst.  Stm ::= "while" ExpBool "do" Stm ;
 StmWhileSecond. Stm ::= "do" Stm "while" ExpBool ;
 StmBlock.       Stm ::= "begin" [Stm] "end";
-StmOutputNum.   Stm ::= "print(" ExpNum ")";
-StmOutputStr.   Stm ::= "print(" ExpStr ")";
+StmOutput.      Stm ::= "print(" Exp ")";
 StmExit.        Stm ::= "exit" ;
+
+ExpIsNum.       Exp ::= ExpNum ;
+ExpIsStr.       Exp ::= ExpStr ;
 
 Eeq.          ExpBool3 ::= ExpNum "=" ExpNum1;
 Eneq.         ExpBool3 ::= ExpNum "<>" ExpNum1;

@@ -10,6 +10,7 @@
 
 void Skeleton::visitProg(Prog* t) {} //abstract class
 void Skeleton::visitStm(Stm* t) {} //abstract class
+void Skeleton::visitExp(Exp* t) {} //abstract class
 void Skeleton::visitExpBool(ExpBool* t) {} //abstract class
 void Skeleton::visitExpNum(ExpNum* t) {} //abstract class
 void Skeleton::visitExpStr(ExpStr* t) {} //abstract class
@@ -85,19 +86,11 @@ void Skeleton::visitStmBlock(StmBlock *stmblock)
 
 }
 
-void Skeleton::visitStmOutputNum(StmOutputNum *stmoutputnum)
+void Skeleton::visitStmOutput(StmOutput *stmoutput)
 {
-  /* Code For StmOutputNum Goes Here */
+  /* Code For StmOutput Goes Here */
 
-  stmoutputnum->expnum_->accept(this);
-
-}
-
-void Skeleton::visitStmOutputStr(StmOutputStr *stmoutputstr)
-{
-  /* Code For StmOutputStr Goes Here */
-
-  stmoutputstr->expstr_->accept(this);
+  stmoutput->exp_->accept(this);
 
 }
 
@@ -105,6 +98,22 @@ void Skeleton::visitStmExit(StmExit *stmexit)
 {
   /* Code For StmExit Goes Here */
 
+
+}
+
+void Skeleton::visitExpIsNum(ExpIsNum *expisnum)
+{
+  /* Code For ExpIsNum Goes Here */
+
+  expisnum->expnum_->accept(this);
+
+}
+
+void Skeleton::visitExpIsStr(ExpIsStr *expisstr)
+{
+  /* Code For ExpIsStr Goes Here */
+
+  expisstr->expstr_->accept(this);
 
 }
 

@@ -92,6 +92,39 @@ Stm* pStm(const char *str)
   }
 }
 
+static Exp* YY_RESULT_Exp_ = 0;
+Exp* pExp(FILE *inp)
+{
+  yy_mylinenumber = 1;
+  initialize_lexer(inp);
+  if (yyparse())
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return YY_RESULT_Exp_;
+  }
+}
+Exp* pExp(const char *str)
+{
+  YY_BUFFER_STATE buf;
+  int result;
+  yy_mylinenumber = 1;
+  initialize_lexer(0);
+  buf = yy_scan_string(str);
+  result = yyparse();
+  yy_delete_buffer(buf);
+  if (result)
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return YY_RESULT_Exp_;
+  }
+}
+
 static ExpBool* YY_RESULT_ExpBool_ = 0;
 ExpBool* pExpBool(FILE *inp)
 {
@@ -236,6 +269,7 @@ ListStm* pListStm(const char *str)
   char* string_;
   Prog* prog_;
   Stm* stm_;
+  Exp* exp_;
   ExpBool* expbool_;
   ExpNum* expnum_;
   ExpStr* expstr_;
@@ -284,6 +318,7 @@ ListStm* pListStm(const char *str)
 
 %type <prog_> Prog
 %type <stm_> Stm
+%type <exp_> Exp
 %type <expbool_> ExpBool3
 %type <expnum_> ExpNum2
 %type <expnum_> ExpNum3
@@ -312,9 +347,11 @@ Stm : _IDENT_ _SYMB_0 ExpNum {  $$ = new StmAssignInt($1, $3); YY_RESULT_Stm_= $
   | _SYMB_37 ExpBool _SYMB_25 Stm {  $$ = new StmWhileFirst($2, $4); YY_RESULT_Stm_= $$; }
   | _SYMB_25 Stm _SYMB_37 ExpBool {  $$ = new StmWhileSecond($2, $4); YY_RESULT_Stm_= $$; }
   | _SYMB_24 ListStm _SYMB_27 {  std::reverse($2->begin(),$2->end()) ;$$ = new StmBlock($2); YY_RESULT_Stm_= $$; }
-  | _SYMB_1 ExpNum _SYMB_2 {  $$ = new StmOutputNum($2); YY_RESULT_Stm_= $$; }
-  | _SYMB_1 ExpStr _SYMB_2 {  $$ = new StmOutputStr($2); YY_RESULT_Stm_= $$; }
+  | _SYMB_1 Exp _SYMB_2 {  $$ = new StmOutput($2); YY_RESULT_Stm_= $$; }
   | _SYMB_28 {  $$ = new StmExit(); YY_RESULT_Stm_= $$; }
+;
+Exp : ExpNum {  $$ = new ExpIsNum($1); YY_RESULT_Exp_= $$; } 
+  | ExpStr {  $$ = new ExpIsStr($1); YY_RESULT_Exp_= $$; }
 ;
 ExpBool3 : ExpNum _SYMB_3 ExpNum1 {  $$ = new Eeq($1, $3); YY_RESULT_ExpBool_= $$; } 
   | ExpNum _SYMB_4 ExpNum1 {  $$ = new Eneq($1, $3); YY_RESULT_ExpBool_= $$; }

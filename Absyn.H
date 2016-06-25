@@ -21,6 +21,7 @@ typedef std::string Ident;
 
 class Prog;
 class Stm;
+class Exp;
 class ExpBool;
 class ExpNum;
 class ExpStr;
@@ -32,9 +33,10 @@ class StmIfElse;
 class StmWhileFirst;
 class StmWhileSecond;
 class StmBlock;
-class StmOutputNum;
-class StmOutputStr;
+class StmOutput;
 class StmExit;
+class ExpIsNum;
+class ExpIsStr;
 class Eeq;
 class Eneq;
 class Elt;
@@ -74,6 +76,7 @@ public:
   virtual ~Visitor() {}
   virtual void visitProg(Prog *p) = 0;
   virtual void visitStm(Stm *p) = 0;
+  virtual void visitExp(Exp *p) = 0;
   virtual void visitExpBool(ExpBool *p) = 0;
   virtual void visitExpNum(ExpNum *p) = 0;
   virtual void visitExpStr(ExpStr *p) = 0;
@@ -85,9 +88,11 @@ public:
   virtual void visitStmWhileFirst(StmWhileFirst *p) = 0;
   virtual void visitStmWhileSecond(StmWhileSecond *p) = 0;
   virtual void visitStmBlock(StmBlock *p) = 0;
-  virtual void visitStmOutputNum(StmOutputNum *p) = 0;
-  virtual void visitStmOutputStr(StmOutputStr *p) = 0;
+  virtual void visitStmOutput(StmOutput *p) = 0;
   virtual void visitStmExit(StmExit *p) = 0;
+
+  virtual String visitExpIsNum(ExpIsNum *p) = 0;
+  virtual String visitExpIsStr(ExpIsStr *p) = 0;
 
   virtual bool visitEeq(Eeq *p) = 0;
   virtual bool visitEneq(Eneq *p) = 0;
@@ -155,6 +160,13 @@ class Stm : public Visitable<void>
 {
 public:
   virtual Stm *clone() const = 0;
+
+};
+
+class Exp : public Visitable<String>
+{
+public:
+  virtual Exp *clone() const = 0;
 
 };
 
@@ -300,32 +312,18 @@ public:
   void swap(StmBlock &);
 };
 
-class StmOutputNum : public Stm
+class StmOutput : public Stm
 {
 public:
-  ExpNum *expnum_;
+  Exp *exp_;
 
-  StmOutputNum(const StmOutputNum &);
-  StmOutputNum &operator=(const StmOutputNum &);
-  StmOutputNum(ExpNum *p1);
-  ~StmOutputNum();
+  StmOutput(const StmOutput &);
+  StmOutput &operator=(const StmOutput &);
+  StmOutput(Exp *p1);
+  ~StmOutput();
   virtual void accept(Visitor *v);
-  virtual StmOutputNum *clone() const;
-  void swap(StmOutputNum &);
-};
-
-class StmOutputStr : public Stm
-{
-public:
-  ExpStr *expstr_;
-
-  StmOutputStr(const StmOutputStr &);
-  StmOutputStr &operator=(const StmOutputStr &);
-  StmOutputStr(ExpStr *p1);
-  ~StmOutputStr();
-  virtual void accept(Visitor *v);
-  virtual StmOutputStr *clone() const;
-  void swap(StmOutputStr &);
+  virtual StmOutput *clone() const;
+  void swap(StmOutput &);
 };
 
 class StmExit : public Stm
@@ -339,6 +337,34 @@ public:
   virtual void accept(Visitor *v);
   virtual StmExit *clone() const;
   void swap(StmExit &);
+};
+
+class ExpIsNum : public Exp
+{
+public:
+  ExpNum *expnum_;
+
+  ExpIsNum(const ExpIsNum &);
+  ExpIsNum &operator=(const ExpIsNum &);
+  ExpIsNum(ExpNum *p1);
+  ~ExpIsNum();
+  virtual String accept(Visitor *v);
+  virtual ExpIsNum *clone() const;
+  void swap(ExpIsNum &);
+};
+
+class ExpIsStr : public Exp
+{
+public:
+  ExpStr *expstr_;
+
+  ExpIsStr(const ExpIsStr &);
+  ExpIsStr &operator=(const ExpIsStr &);
+  ExpIsStr(ExpStr *p1);
+  ~ExpIsStr();
+  virtual String accept(Visitor *v);
+  virtual ExpIsStr *clone() const;
+  void swap(ExpIsStr &);
 };
 
 class EMinus : public ExpNum

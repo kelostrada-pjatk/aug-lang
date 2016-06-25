@@ -39,9 +39,11 @@ void render(char* s);
   void visitStmWhileFirst(StmWhileFirst *p);
   void visitStmWhileSecond(StmWhileSecond *p);
   void visitStmBlock(StmBlock *p);
-  void visitStmOutputNum(StmOutputNum *p);
-  void visitStmOutputStr(StmOutputStr *p);
+  void visitStmOutput(StmOutput *p);
   void visitStmExit(StmExit *p);
+  void visitExp(Exp *p); /* abstract class */
+  void visitExpIsNum(ExpIsNum *p);
+  void visitExpIsStr(ExpIsStr *p);
   void visitExpBool(ExpBool *p); /* abstract class */
   void visitEeq(Eeq *p);
   void visitEneq(Eneq *p);
@@ -158,9 +160,11 @@ class ShowAbsyn : public Visitor
   void visitStmWhileFirst(StmWhileFirst *p);
   void visitStmWhileSecond(StmWhileSecond *p);
   void visitStmBlock(StmBlock *p);
-  void visitStmOutputNum(StmOutputNum *p);
-  void visitStmOutputStr(StmOutputStr *p);
+  void visitStmOutput(StmOutput *p);
   void visitStmExit(StmExit *p);
+  void visitExp(Exp *p); /* abstract class */
+  void visitExpIsNum(ExpIsNum *p);
+  void visitExpIsStr(ExpIsStr *p);
   void visitExpBool(ExpBool *p); /* abstract class */
   void visitEeq(Eeq *p);
   void visitEneq(Eneq *p);

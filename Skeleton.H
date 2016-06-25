@@ -10,6 +10,7 @@ class Skeleton : public Visitor
 public:
   void visitProg(Prog* p);
   void visitStm(Stm* p);
+  void visitExp(Exp* p);
   void visitExpBool(ExpBool* p);
   void visitExpNum(ExpNum* p);
   void visitExpStr(ExpStr* p);
@@ -21,9 +22,10 @@ public:
   void visitStmWhileFirst(StmWhileFirst* p);
   void visitStmWhileSecond(StmWhileSecond* p);
   void visitStmBlock(StmBlock* p);
-  void visitStmOutputNum(StmOutputNum* p);
-  void visitStmOutputStr(StmOutputStr* p);
+  void visitStmOutput(StmOutput* p);
   void visitStmExit(StmExit* p);
+  void visitExpIsNum(ExpIsNum* p);
+  void visitExpIsStr(ExpIsStr* p);
   void visitEeq(Eeq* p);
   void visitEneq(Eneq* p);
   void visitElt(Elt* p);

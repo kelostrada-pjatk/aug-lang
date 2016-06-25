@@ -22,6 +22,7 @@ int Interpreter::run(Visitable<void> *v)
 
 void Interpreter::visitProg(Prog* t) {} //abstract class
 void Interpreter::visitStm(Stm* t) {} //abstract class
+void Interpreter::visitExp(Exp* t) {} //abstract class
 void Interpreter::visitExpBool(ExpBool* t) {} //abstract class
 void Interpreter::visitExpNum(ExpNum* t) {} //abstract class
 void Interpreter::visitExpStr(ExpStr* t) {} //abstract class
@@ -108,24 +109,48 @@ void Interpreter::visitStmBlock(StmBlock *stmblock)
   stmblock->liststm_->accept(this);
 }
 
+void Interpreter::visitStmOutput(StmOutput *stmoutput)
+{
+  /* Code For StmOutput Goes Here */
+
+  String s = stmoutput->exp_->accept(this);
+
+  cout << s << endl;
+}
+
+/*
 void Interpreter::visitStmOutputNum(StmOutputNum *stmoutputnum)
 {
-  /* Code For StmOutputNum Goes Here */
   Integer i = stmoutputnum->expnum_->accept(this);
   printf("%d\n", i);
 }
 
 void Interpreter::visitStmOutputStr(StmOutputStr *stmoutputstr)
 {
-  /* Code For StmOutputStr Goes Here */
   String s = stmoutputstr->expstr_->accept(this);
   printf("%s\n", s.c_str());
 }
+*/
 
 void Interpreter::visitStmExit(StmExit *stmexit)
 {
   /* Code For StmExit Goes Here */
   exit(0);
+}
+
+String Interpreter::visitExpIsNum(ExpIsNum *expisnum)
+{
+  /* Code For ExpIsNum Goes Here */
+
+  Integer i = expisnum->expnum_->accept(this);
+  return to_string(i);
+}
+
+String Interpreter::visitExpIsStr(ExpIsStr *expisstr)
+{
+  /* Code For ExpIsStr Goes Here */
+
+  return expisstr->expstr_->accept(this);
 }
 
 Integer Interpreter::visitEMinus(EMinus *eminus)

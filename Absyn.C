@@ -381,95 +381,47 @@ StmBlock *StmBlock::clone() const
   return new StmBlock(*this);
 }
 
-
-
-/********************   StmOutputNum    ********************/
-StmOutputNum::StmOutputNum(ExpNum *p1)
+/********************   StmOutput    ********************/
+StmOutput::StmOutput(Exp *p1)
 {
-  expnum_ = p1;
+  exp_ = p1;
 
 }
 
-StmOutputNum::StmOutputNum(const StmOutputNum & other)
+StmOutput::StmOutput(const StmOutput & other)
 {
-  expnum_ = other.expnum_->clone();
+  exp_ = other.exp_->clone();
 
 }
 
-StmOutputNum &StmOutputNum::operator=(const StmOutputNum & other)
+StmOutput &StmOutput::operator=(const StmOutput & other)
 {
-  StmOutputNum tmp(other);
+  StmOutput tmp(other);
   swap(tmp);
   return *this;
 }
 
-void StmOutputNum::swap(StmOutputNum & other)
+void StmOutput::swap(StmOutput & other)
 {
-  std::swap(expnum_, other.expnum_);
+  std::swap(exp_, other.exp_);
 
 }
 
-StmOutputNum::~StmOutputNum()
+StmOutput::~StmOutput()
 {
-  delete(expnum_);
+  delete(exp_);
 
 }
 
-void StmOutputNum::accept(Visitor *v)
+void StmOutput::accept(Visitor *v)
 {
-  v->visitStmOutputNum(this);
+  v->visitStmOutput(this);
 }
 
-StmOutputNum *StmOutputNum::clone() const
+StmOutput *StmOutput::clone() const
 {
-  return new StmOutputNum(*this);
+  return new StmOutput(*this);
 }
-
-
-
-/********************   StmOutputStr    ********************/
-StmOutputStr::StmOutputStr(ExpStr *p1)
-{
-  expstr_ = p1;
-
-}
-
-StmOutputStr::StmOutputStr(const StmOutputStr & other)
-{
-  expstr_ = other.expstr_->clone();
-
-}
-
-StmOutputStr &StmOutputStr::operator=(const StmOutputStr & other)
-{
-  StmOutputStr tmp(other);
-  swap(tmp);
-  return *this;
-}
-
-void StmOutputStr::swap(StmOutputStr & other)
-{
-  std::swap(expstr_, other.expstr_);
-
-}
-
-StmOutputStr::~StmOutputStr()
-{
-  delete(expstr_);
-
-}
-
-void StmOutputStr::accept(Visitor *v)
-{
-  v->visitStmOutputStr(this);
-}
-
-StmOutputStr *StmOutputStr::clone() const
-{
-  return new StmOutputStr(*this);
-}
-
-
 
 /********************   StmExit    ********************/
 StmExit::StmExit()
@@ -509,6 +461,92 @@ StmExit *StmExit::clone() const
   return new StmExit(*this);
 }
 
+
+/********************   ExpIsNum    ********************/
+ExpIsNum::ExpIsNum(ExpNum *p1)
+{
+  expnum_ = p1;
+
+}
+
+ExpIsNum::ExpIsNum(const ExpIsNum & other)
+{
+  expnum_ = other.expnum_->clone();
+
+}
+
+ExpIsNum &ExpIsNum::operator=(const ExpIsNum & other)
+{
+  ExpIsNum tmp(other);
+  swap(tmp);
+  return *this;
+}
+
+void ExpIsNum::swap(ExpIsNum & other)
+{
+  std::swap(expnum_, other.expnum_);
+
+}
+
+ExpIsNum::~ExpIsNum()
+{
+  delete(expnum_);
+
+}
+
+String ExpIsNum::accept(Visitor *v)
+{
+  return v->visitExpIsNum(this);
+}
+
+ExpIsNum *ExpIsNum::clone() const
+{
+  return new ExpIsNum(*this);
+}
+
+
+
+/********************   ExpIsStr    ********************/
+ExpIsStr::ExpIsStr(ExpStr *p1)
+{
+  expstr_ = p1;
+
+}
+
+ExpIsStr::ExpIsStr(const ExpIsStr & other)
+{
+  expstr_ = other.expstr_->clone();
+
+}
+
+ExpIsStr &ExpIsStr::operator=(const ExpIsStr & other)
+{
+  ExpIsStr tmp(other);
+  swap(tmp);
+  return *this;
+}
+
+void ExpIsStr::swap(ExpIsStr & other)
+{
+  std::swap(expstr_, other.expstr_);
+
+}
+
+ExpIsStr::~ExpIsStr()
+{
+  delete(expstr_);
+
+}
+
+String ExpIsStr::accept(Visitor *v)
+{
+  return v->visitExpIsStr(this);
+}
+
+ExpIsStr *ExpIsStr::clone() const
+{
+  return new ExpIsStr(*this);
+}
 
 
 /********************   EMinus    ********************/
