@@ -1,3 +1,14 @@
+a := 1;
+b := "asd";
+
+while (a <= 5) do
+begin
+  print(a);
+  a := a + 1
+end;
+
+print(b);
+
 print("Input number:");
 print(readint + 1);
 print("Input string:");

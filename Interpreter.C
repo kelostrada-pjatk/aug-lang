@@ -7,8 +7,12 @@
 #include "Interpreter.H"
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
+#include <iostream> 
+#include <unordered_map>
 using namespace std;
+
+unordered_map<Ident, Integer> numVars;
+unordered_map<Ident, String> strVars;
 
 int Interpreter::run(Visitable<void> *v)
 {
@@ -33,20 +37,30 @@ void Interpreter::visitStmAssignInt(StmAssignInt *stmassignint)
 {
   /* Code For StmAssignInt Goes Here */
 
-  visitIdent(stmassignint->ident_);
-  stmassignint->expnum_->accept(this);
+  Ident ident = visitIdent(stmassignint->ident_);
+  Integer value = stmassignint->expnum_->accept(this);
 
-  // TODO: poprawić
+  if (strVars.find(ident) != strVars.end()) {
+    cout << "Variable " << ident << " is already declared as String" << endl;
+    exit(-1);
+  }
+
+  numVars[ident] = value;
 }
 
 void Interpreter::visitStmAssignStr(StmAssignStr *stmassignstr)
 {
   /* Code For StmAssignStr Goes Here */
 
-  visitIdent(stmassignstr->ident_);
-  stmassignstr->expstr_->accept(this);
+  Ident ident = visitIdent(stmassignstr->ident_);
+  String value = stmassignstr->expstr_->accept(this);
 
-  // TODO: poprawić
+  if (numVars.find(ident) != numVars.end()) {
+    cout << "Variable " << ident << " is already declared as Number" << endl;
+    exit(-1);
+  }
+
+  strVars[ident] = value;
 }
 
 void Interpreter::visitStmIf(StmIf *stmif)
@@ -167,10 +181,9 @@ Integer Interpreter::visitENumVar(ENumVar *enumvar)
 {
   /* Code For ENumVar Goes Here */
 
-  visitIdent(enumvar->ident_);
+  Ident ident = visitIdent(enumvar->ident_);
 
-  // TODO: poprawić
-  return 0;
+  return numVars[ident];
 }
 
 Integer Interpreter::visitStmReadInt(StmReadInt *stmreadint)
@@ -214,11 +227,13 @@ String Interpreter::visitStmSubstr(StmSubstr *stmsubstr)
   Integer pos = stmsubstr->expnum_1->accept(this);
   Integer len = stmsubstr->expnum_2->accept(this);
 
-  if (pos < 1 || pos > str.length()) {
+  Integer length = str.length();
+
+  if (pos < 1 || pos > length) {
     return "";
   }
 
-  if (pos + len - 1 > str.length()) {
+  if (pos + len - 1 > length) {
     return str.substr(pos - 1);
   }
 
@@ -236,10 +251,9 @@ String Interpreter::visitEStrVar(EStrVar *estrvar)
 {
   /* Code For EStrVar Goes Here */
 
-  visitIdent(estrvar->ident_);
+  Ident ident = visitIdent(estrvar->ident_);
 
-  // TODO: poprawić
-  return "";
+  return strVars[ident];
 }
 
 String Interpreter::visitStmReadStr(StmReadStr *stmreadstr)
@@ -374,9 +388,10 @@ String Interpreter::visitString(String x)
   return x;
 }
 
-void Interpreter::visitIdent(Ident x)
+Ident Interpreter::visitIdent(Ident x)
 {
   /* Code for Ident Goes Here */
+  return x;
 }
 
 

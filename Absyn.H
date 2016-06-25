@@ -129,7 +129,7 @@ public:
   virtual void visitChar(Char x) = 0;
   virtual void visitDouble(Double x) = 0;
   virtual String visitString(String x) = 0;
-  virtual void visitIdent(Ident x) = 0;
+  virtual Ident visitIdent(Ident x) = 0;
 
 };
 

@@ -66,7 +66,7 @@ public:
   void visitDouble(Double d);
   void visitChar(Char c);
   String visitString(String s);
-  void visitIdent(String s);
+  Ident visitIdent(String s);
 
 };
 
