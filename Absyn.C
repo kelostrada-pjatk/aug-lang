@@ -543,9 +543,9 @@ EMinus::~EMinus()
 
 }
 
-void EMinus::accept(Visitor *v)
+Integer EMinus::accept(Visitor *v)
 {
-  v->visitEMinus(this);
+  return v->visitEMinus(this);
 }
 
 EMinus *EMinus::clone() const
@@ -591,9 +591,9 @@ EAdd::~EAdd()
 
 }
 
-void EAdd::accept(Visitor *v)
+Integer EAdd::accept(Visitor *v)
 {
-  v->visitEAdd(this);
+  return v->visitEAdd(this);
 }
 
 EAdd *EAdd::clone() const
@@ -639,9 +639,9 @@ ESub::~ESub()
 
 }
 
-void ESub::accept(Visitor *v)
+Integer ESub::accept(Visitor *v)
 {
-  v->visitESub(this);
+  return v->visitESub(this);
 }
 
 ESub *ESub::clone() const
@@ -687,9 +687,9 @@ EMul::~EMul()
 
 }
 
-void EMul::accept(Visitor *v)
+Integer EMul::accept(Visitor *v)
 {
-  v->visitEMul(this);
+  return v->visitEMul(this);
 }
 
 EMul *EMul::clone() const
@@ -735,9 +735,9 @@ EDiv::~EDiv()
 
 }
 
-void EDiv::accept(Visitor *v)
+Integer EDiv::accept(Visitor *v)
 {
-  v->visitEDiv(this);
+  return v->visitEDiv(this);
 }
 
 EDiv *EDiv::clone() const
@@ -783,9 +783,9 @@ EMod::~EMod()
 
 }
 
-void EMod::accept(Visitor *v)
+Integer EMod::accept(Visitor *v)
 {
-  v->visitEMod(this);
+  return v->visitEMod(this);
 }
 
 EMod *EMod::clone() const
@@ -826,9 +826,9 @@ EInt::~EInt()
 
 }
 
-void EInt::accept(Visitor *v)
+Integer EInt::accept(Visitor *v)
 {
-  v->visitEInt(this);
+  return v->visitEInt(this);
 }
 
 EInt *EInt::clone() const
@@ -869,9 +869,9 @@ ENumVar::~ENumVar()
 
 }
 
-void ENumVar::accept(Visitor *v)
+Integer ENumVar::accept(Visitor *v)
 {
-  v->visitENumVar(this);
+  return v->visitENumVar(this);
 }
 
 ENumVar *ENumVar::clone() const
@@ -909,9 +909,9 @@ StmReadInt::~StmReadInt()
 
 }
 
-void StmReadInt::accept(Visitor *v)
+Integer StmReadInt::accept(Visitor *v)
 {
-  v->visitStmReadInt(this);
+  return v->visitStmReadInt(this);
 }
 
 StmReadInt *StmReadInt::clone() const
@@ -953,9 +953,9 @@ StmLength::~StmLength()
 
 }
 
-void StmLength::accept(Visitor *v)
+Integer StmLength::accept(Visitor *v)
 {
-  v->visitStmLength(this);
+  return v->visitStmLength(this);
 }
 
 StmLength *StmLength::clone() const
@@ -1001,9 +1001,9 @@ StmPosition::~StmPosition()
 
 }
 
-void StmPosition::accept(Visitor *v)
+Integer StmPosition::accept(Visitor *v)
 {
-  v->visitStmPosition(this);
+  return v->visitStmPosition(this);
 }
 
 StmPosition *StmPosition::clone() const
@@ -1049,9 +1049,9 @@ StmConcat::~StmConcat()
 
 }
 
-void StmConcat::accept(Visitor *v)
+String StmConcat::accept(Visitor *v)
 {
-  v->visitStmConcat(this);
+  return v->visitStmConcat(this);
 }
 
 StmConcat *StmConcat::clone() const
@@ -1101,9 +1101,9 @@ StmSubstr::~StmSubstr()
 
 }
 
-void StmSubstr::accept(Visitor *v)
+String StmSubstr::accept(Visitor *v)
 {
-  v->visitStmSubstr(this);
+  return v->visitStmSubstr(this);
 }
 
 StmSubstr *StmSubstr::clone() const
@@ -1144,9 +1144,9 @@ EStr::~EStr()
 
 }
 
-void EStr::accept(Visitor *v)
+String EStr::accept(Visitor *v)
 {
-  v->visitEStr(this);
+  return v->visitEStr(this);
 }
 
 EStr *EStr::clone() const
@@ -1187,9 +1187,9 @@ EStrVar::~EStrVar()
 
 }
 
-void EStrVar::accept(Visitor *v)
+String EStrVar::accept(Visitor *v)
 {
-  v->visitEStrVar(this);
+  return v->visitEStrVar(this);
 }
 
 EStrVar *EStrVar::clone() const
@@ -1227,9 +1227,9 @@ StmReadStr::~StmReadStr()
 
 }
 
-void StmReadStr::accept(Visitor *v)
+String StmReadStr::accept(Visitor *v)
 {
-  v->visitStmReadStr(this);
+  return v->visitStmReadStr(this);
 }
 
 StmReadStr *StmReadStr::clone() const
@@ -1275,9 +1275,9 @@ Eeq::~Eeq()
 
 }
 
-void Eeq::accept(Visitor *v)
+bool Eeq::accept(Visitor *v)
 {
-  v->visitEeq(this);
+  return v->visitEeq(this);
 }
 
 Eeq *Eeq::clone() const
@@ -1323,9 +1323,9 @@ Eneq::~Eneq()
 
 }
 
-void Eneq::accept(Visitor *v)
+bool Eneq::accept(Visitor *v)
 {
-  v->visitEneq(this);
+  return v->visitEneq(this);
 }
 
 Eneq *Eneq::clone() const
@@ -1371,9 +1371,9 @@ Elt::~Elt()
 
 }
 
-void Elt::accept(Visitor *v)
+bool Elt::accept(Visitor *v)
 {
-  v->visitElt(this);
+  return v->visitElt(this);
 }
 
 Elt *Elt::clone() const
@@ -1419,9 +1419,9 @@ Egt::~Egt()
 
 }
 
-void Egt::accept(Visitor *v)
+bool Egt::accept(Visitor *v)
 {
-  v->visitEgt(this);
+  return v->visitEgt(this);
 }
 
 Egt *Egt::clone() const
@@ -1467,9 +1467,9 @@ Ele::~Ele()
 
 }
 
-void Ele::accept(Visitor *v)
+bool Ele::accept(Visitor *v)
 {
-  v->visitEle(this);
+  return v->visitEle(this);
 }
 
 Ele *Ele::clone() const
@@ -1515,9 +1515,9 @@ Ege::~Ege()
 
 }
 
-void Ege::accept(Visitor *v)
+bool Ege::accept(Visitor *v)
 {
-  v->visitEge(this);
+  return v->visitEge(this);
 }
 
 Ege *Ege::clone() const
@@ -1563,9 +1563,9 @@ OrExp::~OrExp()
 
 }
 
-void OrExp::accept(Visitor *v)
+bool OrExp::accept(Visitor *v)
 {
-  v->visitOrExp(this);
+  return v->visitOrExp(this);
 }
 
 OrExp *OrExp::clone() const
@@ -1611,9 +1611,9 @@ AndExp::~AndExp()
 
 }
 
-void AndExp::accept(Visitor *v)
+bool AndExp::accept(Visitor *v)
 {
-  v->visitAndExp(this);
+  return v->visitAndExp(this);
 }
 
 AndExp *AndExp::clone() const
@@ -1659,9 +1659,9 @@ EStrEq::~EStrEq()
 
 }
 
-void EStrEq::accept(Visitor *v)
+bool EStrEq::accept(Visitor *v)
 {
-  v->visitEStrEq(this);
+  return v->visitEStrEq(this);
 }
 
 EStrEq *EStrEq::clone() const
@@ -1707,9 +1707,9 @@ EStrNeq::~EStrNeq()
 
 }
 
-void EStrNeq::accept(Visitor *v)
+bool EStrNeq::accept(Visitor *v)
 {
-  v->visitEStrNeq(this);
+  return v->visitEStrNeq(this);
 }
 
 EStrNeq *EStrNeq::clone() const
@@ -1751,9 +1751,9 @@ NotExp::~NotExp()
 
 }
 
-void NotExp::accept(Visitor *v)
+bool NotExp::accept(Visitor *v)
 {
-  v->visitNotExp(this);
+  return v->visitNotExp(this);
 }
 
 NotExp *NotExp::clone() const
@@ -1791,9 +1791,9 @@ TrueVal::~TrueVal()
 
 }
 
-void TrueVal::accept(Visitor *v)
+bool TrueVal::accept(Visitor *v)
 {
-  v->visitTrueVal(this);
+  return v->visitTrueVal(this);
 }
 
 TrueVal *TrueVal::clone() const
@@ -1831,9 +1831,9 @@ FalseVal::~FalseVal()
 
 }
 
-void FalseVal::accept(Visitor *v)
+bool FalseVal::accept(Visitor *v)
 {
-  v->visitFalseVal(this);
+  return v->visitFalseVal(this);
 }
 
 FalseVal *FalseVal::clone() const

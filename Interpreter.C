@@ -5,8 +5,13 @@
    algorithms to use context information differently. */
 
 #include "Interpreter.H"
+#include <stdio.h>
 
-
+int Interpreter::run(Visitable<void> *v)
+{
+  v->accept(this);
+  return 0;
+}
 
 void Interpreter::visitProg(Prog* t) {} //abstract class
 void Interpreter::visitStm(Stm* t) {} //abstract class
@@ -18,7 +23,7 @@ void Interpreter::visitProgram(Program *program)
 {
   /* Code For Program Goes Here */
 
-  program->liststm_->accept(this);
+  if (program->liststm_) program->liststm_->accept(this);
 
 }
 
@@ -88,17 +93,16 @@ void Interpreter::visitStmBlock(StmBlock *stmblock)
 void Interpreter::visitStmOutputNum(StmOutputNum *stmoutputnum)
 {
   /* Code For StmOutputNum Goes Here */
-
-  stmoutputnum->expnum_->accept(this);
-
+  Integer i = stmoutputnum->expnum_->accept(this);
+  printf("%d\n", i);
 }
 
 void Interpreter::visitStmOutputStr(StmOutputStr *stmoutputstr)
 {
   /* Code For StmOutputStr Goes Here */
 
-  stmoutputstr->expstr_->accept(this);
-
+  String s = stmoutputstr->expstr_->accept(this);
+  printf("%s\n", s.c_str());
 }
 
 void Interpreter::visitStmExit(StmExit *stmexit)
@@ -108,109 +112,107 @@ void Interpreter::visitStmExit(StmExit *stmexit)
 
 }
 
-void Interpreter::visitEMinus(EMinus *eminus)
+Integer Interpreter::visitEMinus(EMinus *eminus)
 {
   /* Code For EMinus Goes Here */
 
-  eminus->expnum_->accept(this);
+  return -eminus->expnum_->accept(this);
 
 }
 
-void Interpreter::visitEAdd(EAdd *eadd)
+Integer Interpreter::visitEAdd(EAdd *eadd)
 {
   /* Code For EAdd Goes Here */
 
-  eadd->expnum_1->accept(this);
-  eadd->expnum_2->accept(this);
-
+  return eadd->expnum_1->accept(this) + eadd->expnum_2->accept(this);
 }
 
-void Interpreter::visitESub(ESub *esub)
+Integer Interpreter::visitESub(ESub *esub)
 {
   /* Code For ESub Goes Here */
 
-  esub->expnum_1->accept(this);
-  esub->expnum_2->accept(this);
-
+  return esub->expnum_1->accept(this) - esub->expnum_2->accept(this);
 }
 
-void Interpreter::visitEMul(EMul *emul)
+Integer Interpreter::visitEMul(EMul *emul)
 {
   /* Code For EMul Goes Here */
 
-  emul->expnum_1->accept(this);
-  emul->expnum_2->accept(this);
-
+  return emul->expnum_1->accept(this) * emul->expnum_2->accept(this);
 }
 
-void Interpreter::visitEDiv(EDiv *ediv)
+Integer Interpreter::visitEDiv(EDiv *ediv)
 {
   /* Code For EDiv Goes Here */
 
-  ediv->expnum_1->accept(this);
-  ediv->expnum_2->accept(this);
-
+  return ediv->expnum_1->accept(this) / ediv->expnum_2->accept(this);
 }
 
-void Interpreter::visitEMod(EMod *emod)
+Integer Interpreter::visitEMod(EMod *emod)
 {
   /* Code For EMod Goes Here */
 
-  emod->expnum_1->accept(this);
-  emod->expnum_2->accept(this);
-
+  return emod->expnum_1->accept(this) % emod->expnum_2->accept(this);
 }
 
-void Interpreter::visitEInt(EInt *eint)
+Integer Interpreter::visitEInt(EInt *eint)
 {
   /* Code For EInt Goes Here */
 
-  visitInteger(eint->integer_);
-
+  return visitInteger(eint->integer_);
 }
 
-void Interpreter::visitENumVar(ENumVar *enumvar)
+Integer Interpreter::visitENumVar(ENumVar *enumvar)
 {
   /* Code For ENumVar Goes Here */
 
   visitIdent(enumvar->ident_);
 
+  // TODO: poprawić
+  return 0;
 }
 
-void Interpreter::visitStmReadInt(StmReadInt *stmreadint)
+Integer Interpreter::visitStmReadInt(StmReadInt *stmreadint)
 {
   /* Code For StmReadInt Goes Here */
 
-
+  // TODO: poprawić
+  return 0;
 }
 
-void Interpreter::visitStmLength(StmLength *stmlength)
+Integer Interpreter::visitStmLength(StmLength *stmlength)
 {
   /* Code For StmLength Goes Here */
 
   stmlength->expstr_->accept(this);
 
+  // TODO: poprawić
+  return 0;
 }
 
-void Interpreter::visitStmPosition(StmPosition *stmposition)
+Integer Interpreter::visitStmPosition(StmPosition *stmposition)
 {
   /* Code For StmPosition Goes Here */
 
   stmposition->expstr_1->accept(this);
   stmposition->expstr_2->accept(this);
 
+  // TODO: poprawić
+  return 0;
 }
 
-void Interpreter::visitStmConcat(StmConcat *stmconcat)
+String Interpreter::visitStmConcat(StmConcat *stmconcat)
 {
   /* Code For StmConcat Goes Here */
 
   stmconcat->expstr_1->accept(this);
   stmconcat->expstr_2->accept(this);
 
+  //TODO: poprawić
+  return "";
 }
 
-void Interpreter::visitStmSubstr(StmSubstr *stmsubstr)
+String Interpreter::visitStmSubstr(StmSubstr *stmsubstr)
 {
   /* Code For StmSubstr Goes Here */
 
@@ -218,141 +220,132 @@ void Interpreter::visitStmSubstr(StmSubstr *stmsubstr)
   stmsubstr->expnum_1->accept(this);
   stmsubstr->expnum_2->accept(this);
 
+  // TODO: poprawić
+  return "";
 }
 
-void Interpreter::visitEStr(EStr *estr)
+String Interpreter::visitEStr(EStr *estr)
 {
   /* Code For EStr Goes Here */
 
-  visitString(estr->string_);
-
+  return visitString(estr->string_);
 }
 
-void Interpreter::visitEStrVar(EStrVar *estrvar)
+String Interpreter::visitEStrVar(EStrVar *estrvar)
 {
   /* Code For EStrVar Goes Here */
 
   visitIdent(estrvar->ident_);
 
+  // TODO: poprawić
+  return "";
 }
 
-void Interpreter::visitStmReadStr(StmReadStr *stmreadstr)
+String Interpreter::visitStmReadStr(StmReadStr *stmreadstr)
 {
   /* Code For StmReadStr Goes Here */
 
-
+  // TODO: poprawić
+  return "";
 }
 
-void Interpreter::visitEeq(Eeq *eeq)
+bool Interpreter::visitEeq(Eeq *eeq)
 {
   /* Code For Eeq Goes Here */
 
-  eeq->expnum_1->accept(this);
-  eeq->expnum_2->accept(this);
-
+  return eeq->expnum_1->accept(this) == eeq->expnum_2->accept(this);
 }
 
-void Interpreter::visitEneq(Eneq *eneq)
+bool Interpreter::visitEneq(Eneq *eneq)
 {
   /* Code For Eneq Goes Here */
 
-  eneq->expnum_1->accept(this);
-  eneq->expnum_2->accept(this);
-
+  return eneq->expnum_1->accept(this) != eneq->expnum_2->accept(this);
 }
 
-void Interpreter::visitElt(Elt *elt)
+bool Interpreter::visitElt(Elt *elt)
 {
   /* Code For Elt Goes Here */
 
-  elt->expnum_1->accept(this);
-  elt->expnum_2->accept(this);
-
+  return elt->expnum_1->accept(this) < elt->expnum_2->accept(this);
 }
 
-void Interpreter::visitEgt(Egt *egt)
+bool Interpreter::visitEgt(Egt *egt)
 {
   /* Code For Egt Goes Here */
 
-  egt->expnum_1->accept(this);
-  egt->expnum_2->accept(this);
-
+  return egt->expnum_1->accept(this) > egt->expnum_2->accept(this);
 }
 
-void Interpreter::visitEle(Ele *ele)
+bool Interpreter::visitEle(Ele *ele)
 {
   /* Code For Ele Goes Here */
 
-  ele->expnum_1->accept(this);
-  ele->expnum_2->accept(this);
-
+  return ele->expnum_1->accept(this) <= ele->expnum_2->accept(this);
 }
 
-void Interpreter::visitEge(Ege *ege)
+bool Interpreter::visitEge(Ege *ege)
 {
   /* Code For Ege Goes Here */
 
-  ege->expnum_1->accept(this);
-  ege->expnum_2->accept(this);
-
+  return ege->expnum_1->accept(this) >= ege->expnum_2->accept(this);
 }
 
-void Interpreter::visitOrExp(OrExp *orexp)
+bool Interpreter::visitOrExp(OrExp *orexp)
 {
   /* Code For OrExp Goes Here */
 
-  orexp->expbool_1->accept(this);
-  orexp->expbool_2->accept(this);
-
+  return orexp->expbool_1->accept(this) || orexp->expbool_2->accept(this);
 }
 
-void Interpreter::visitAndExp(AndExp *andexp)
+bool Interpreter::visitAndExp(AndExp *andexp)
 {
   /* Code For AndExp Goes Here */
 
-  andexp->expbool_1->accept(this);
-  andexp->expbool_2->accept(this);
-
+  return andexp->expbool_1->accept(this) && andexp->expbool_2->accept(this);
 }
 
-void Interpreter::visitEStrEq(EStrEq *estreq)
+bool Interpreter::visitEStrEq(EStrEq *estreq)
 {
   /* Code For EStrEq Goes Here */
 
   estreq->expstr_1->accept(this);
   estreq->expstr_2->accept(this);
 
+  // TODO: poprawić
+  return false;
 }
 
-void Interpreter::visitEStrNeq(EStrNeq *estrneq)
+bool Interpreter::visitEStrNeq(EStrNeq *estrneq)
 {
   /* Code For EStrNeq Goes Here */
 
   estrneq->expstr_1->accept(this);
   estrneq->expstr_2->accept(this);
 
+  // TODO: poprawić
+  return false;
 }
 
-void Interpreter::visitNotExp(NotExp *notexp)
+bool Interpreter::visitNotExp(NotExp *notexp)
 {
   /* Code For NotExp Goes Here */
 
-  notexp->expbool_->accept(this);
-
+  return !notexp->expbool_->accept(this);
 }
 
-void Interpreter::visitTrueVal(TrueVal *trueval)
+bool Interpreter::visitTrueVal(TrueVal *trueval)
 {
   /* Code For TrueVal Goes Here */
 
-
+  return true;
 }
 
-void Interpreter::visitFalseVal(FalseVal *falseval)
+bool Interpreter::visitFalseVal(FalseVal *falseval)
 {
   /* Code For FalseVal Goes Here */
 
-
+  return false;
 }
 
 
@@ -365,9 +358,10 @@ void Interpreter::visitListStm(ListStm* liststm)
 }
 
 
-void Interpreter::visitInteger(Integer x)
+Integer Interpreter::visitInteger(Integer x)
 {
   /* Code for Integer Goes Here */
+  return x;
 }
 
 void Interpreter::visitChar(Char x)
@@ -380,9 +374,10 @@ void Interpreter::visitDouble(Double x)
   /* Code for Double Goes Here */
 }
 
-void Interpreter::visitString(String x)
+String Interpreter::visitString(String x)
 {
   /* Code for String Goes Here */
+  return x;
 }
 
 void Interpreter::visitIdent(Ident x)

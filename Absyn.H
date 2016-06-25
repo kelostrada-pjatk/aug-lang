@@ -88,86 +88,91 @@ public:
   virtual void visitStmOutputNum(StmOutputNum *p) = 0;
   virtual void visitStmOutputStr(StmOutputStr *p) = 0;
   virtual void visitStmExit(StmExit *p) = 0;
-  virtual void visitEeq(Eeq *p) = 0;
-  virtual void visitEneq(Eneq *p) = 0;
-  virtual void visitElt(Elt *p) = 0;
-  virtual void visitEgt(Egt *p) = 0;
-  virtual void visitEle(Ele *p) = 0;
-  virtual void visitEge(Ege *p) = 0;
-  virtual void visitEMinus(EMinus *p) = 0;
-  virtual void visitEAdd(EAdd *p) = 0;
-  virtual void visitESub(ESub *p) = 0;
-  virtual void visitEMul(EMul *p) = 0;
-  virtual void visitEDiv(EDiv *p) = 0;
-  virtual void visitEMod(EMod *p) = 0;
-  virtual void visitEInt(EInt *p) = 0;
-  virtual void visitENumVar(ENumVar *p) = 0;
-  virtual void visitStmReadInt(StmReadInt *p) = 0;
-  virtual void visitStmLength(StmLength *p) = 0;
-  virtual void visitStmPosition(StmPosition *p) = 0;
-  virtual void visitStmConcat(StmConcat *p) = 0;
-  virtual void visitStmSubstr(StmSubstr *p) = 0;
-  virtual void visitEStr(EStr *p) = 0;
-  virtual void visitEStrVar(EStrVar *p) = 0;
-  virtual void visitStmReadStr(StmReadStr *p) = 0;
-  virtual void visitOrExp(OrExp *p) = 0;
-  virtual void visitAndExp(AndExp *p) = 0;
-  virtual void visitEStrEq(EStrEq *p) = 0;
-  virtual void visitEStrNeq(EStrNeq *p) = 0;
-  virtual void visitNotExp(NotExp *p) = 0;
-  virtual void visitTrueVal(TrueVal *p) = 0;
-  virtual void visitFalseVal(FalseVal *p) = 0;
+
+  virtual bool visitEeq(Eeq *p) = 0;
+  virtual bool visitEneq(Eneq *p) = 0;
+  virtual bool visitElt(Elt *p) = 0;
+  virtual bool visitEgt(Egt *p) = 0;
+  virtual bool visitEle(Ele *p) = 0;
+  virtual bool visitEge(Ege *p) = 0;
+
+  virtual Integer visitEMinus(EMinus *p) = 0;
+  virtual Integer visitEAdd(EAdd *p) = 0;
+  virtual Integer visitESub(ESub *p) = 0;
+  virtual Integer visitEMul(EMul *p) = 0;
+  virtual Integer visitEDiv(EDiv *p) = 0;
+  virtual Integer visitEMod(EMod *p) = 0;
+  virtual Integer visitEInt(EInt *p) = 0;
+  virtual Integer visitENumVar(ENumVar *p) = 0;
+  virtual Integer visitStmReadInt(StmReadInt *p) = 0;
+  virtual Integer visitStmLength(StmLength *p) = 0;
+  virtual Integer visitStmPosition(StmPosition *p) = 0;
+
+  virtual String visitStmConcat(StmConcat *p) = 0;
+  virtual String visitStmSubstr(StmSubstr *p) = 0;
+  virtual String visitEStr(EStr *p) = 0;
+  virtual String visitEStrVar(EStrVar *p) = 0;
+  virtual String visitStmReadStr(StmReadStr *p) = 0;
+
+  virtual bool visitOrExp(OrExp *p) = 0;
+  virtual bool visitAndExp(AndExp *p) = 0;
+  virtual bool visitEStrEq(EStrEq *p) = 0;
+  virtual bool visitEStrNeq(EStrNeq *p) = 0;
+  virtual bool visitNotExp(NotExp *p) = 0;
+  virtual bool visitTrueVal(TrueVal *p) = 0;
+  virtual bool visitFalseVal(FalseVal *p) = 0;
+
   virtual void visitListStm(ListStm *p) = 0;
 
 
-  virtual void visitInteger(Integer x) = 0;
+  virtual Integer visitInteger(Integer x) = 0;
   virtual void visitChar(Char x) = 0;
   virtual void visitDouble(Double x) = 0;
-  virtual void visitString(String x) = 0;
+  virtual String visitString(String x) = 0;
   virtual void visitIdent(Ident x) = 0;
 
 };
 
-
+template <typename T> 
 class Visitable
 {
  public:
   virtual ~Visitable() {}
-  virtual void accept(Visitor *v) = 0;
+  virtual T accept(Visitor *v) = 0;
 };
 
 
 /********************   Abstract Syntax Classes    ********************/
 
-class Prog : public Visitable
+class Prog : public Visitable<void>
 {
 public:
   virtual Prog *clone() const = 0;
 
 };
 
-class Stm : public Visitable
+class Stm : public Visitable<void>
 {
 public:
   virtual Stm *clone() const = 0;
 
 };
 
-class ExpBool : public Visitable
+class ExpBool : public Visitable<bool>
 {
 public:
   virtual ExpBool *clone() const = 0;
 
 };
 
-class ExpNum : public Visitable
+class ExpNum : public Visitable<Integer>
 {
 public:
   virtual ExpNum *clone() const = 0;
 
 };
 
-class ExpStr : public Visitable
+class ExpStr : public Visitable<String>
 {
 public:
   virtual ExpStr *clone() const = 0;
@@ -345,7 +350,7 @@ public:
   EMinus &operator=(const EMinus &);
   EMinus(ExpNum *p1);
   ~EMinus();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual EMinus *clone() const;
   void swap(EMinus &);
 };
@@ -360,7 +365,7 @@ public:
   EAdd &operator=(const EAdd &);
   EAdd(ExpNum *p1, ExpNum *p2);
   ~EAdd();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual EAdd *clone() const;
   void swap(EAdd &);
 };
@@ -375,7 +380,7 @@ public:
   ESub &operator=(const ESub &);
   ESub(ExpNum *p1, ExpNum *p2);
   ~ESub();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual ESub *clone() const;
   void swap(ESub &);
 };
@@ -390,7 +395,7 @@ public:
   EMul &operator=(const EMul &);
   EMul(ExpNum *p1, ExpNum *p2);
   ~EMul();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual EMul *clone() const;
   void swap(EMul &);
 };
@@ -405,7 +410,7 @@ public:
   EDiv &operator=(const EDiv &);
   EDiv(ExpNum *p1, ExpNum *p2);
   ~EDiv();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual EDiv *clone() const;
   void swap(EDiv &);
 };
@@ -420,7 +425,7 @@ public:
   EMod &operator=(const EMod &);
   EMod(ExpNum *p1, ExpNum *p2);
   ~EMod();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual EMod *clone() const;
   void swap(EMod &);
 };
@@ -434,7 +439,7 @@ public:
   EInt &operator=(const EInt &);
   EInt(Integer p1);
   ~EInt();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual EInt *clone() const;
   void swap(EInt &);
 };
@@ -448,7 +453,7 @@ public:
   ENumVar &operator=(const ENumVar &);
   ENumVar(Ident p1);
   ~ENumVar();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual ENumVar *clone() const;
   void swap(ENumVar &);
 };
@@ -461,7 +466,7 @@ public:
   StmReadInt &operator=(const StmReadInt &);
   StmReadInt();
   ~StmReadInt();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual StmReadInt *clone() const;
   void swap(StmReadInt &);
 };
@@ -475,7 +480,7 @@ public:
   StmLength &operator=(const StmLength &);
   StmLength(ExpStr *p1);
   ~StmLength();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual StmLength *clone() const;
   void swap(StmLength &);
 };
@@ -490,7 +495,7 @@ public:
   StmPosition &operator=(const StmPosition &);
   StmPosition(ExpStr *p1, ExpStr *p2);
   ~StmPosition();
-  virtual void accept(Visitor *v);
+  virtual Integer accept(Visitor *v);
   virtual StmPosition *clone() const;
   void swap(StmPosition &);
 };
@@ -505,7 +510,7 @@ public:
   StmConcat &operator=(const StmConcat &);
   StmConcat(ExpStr *p1, ExpStr *p2);
   ~StmConcat();
-  virtual void accept(Visitor *v);
+  virtual String accept(Visitor *v);
   virtual StmConcat *clone() const;
   void swap(StmConcat &);
 };
@@ -521,7 +526,7 @@ public:
   StmSubstr &operator=(const StmSubstr &);
   StmSubstr(ExpStr *p1, ExpNum *p2, ExpNum *p3);
   ~StmSubstr();
-  virtual void accept(Visitor *v);
+  virtual String accept(Visitor *v);
   virtual StmSubstr *clone() const;
   void swap(StmSubstr &);
 };
@@ -535,7 +540,7 @@ public:
   EStr &operator=(const EStr &);
   EStr(String p1);
   ~EStr();
-  virtual void accept(Visitor *v);
+  virtual String accept(Visitor *v);
   virtual EStr *clone() const;
   void swap(EStr &);
 };
@@ -549,7 +554,7 @@ public:
   EStrVar &operator=(const EStrVar &);
   EStrVar(Ident p1);
   ~EStrVar();
-  virtual void accept(Visitor *v);
+  virtual String accept(Visitor *v);
   virtual EStrVar *clone() const;
   void swap(EStrVar &);
 };
@@ -562,7 +567,7 @@ public:
   StmReadStr &operator=(const StmReadStr &);
   StmReadStr();
   ~StmReadStr();
-  virtual void accept(Visitor *v);
+  virtual String accept(Visitor *v);
   virtual StmReadStr *clone() const;
   void swap(StmReadStr &);
 };
@@ -577,7 +582,7 @@ public:
   Eeq &operator=(const Eeq &);
   Eeq(ExpNum *p1, ExpNum *p2);
   ~Eeq();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual Eeq *clone() const;
   void swap(Eeq &);
 };
@@ -592,7 +597,7 @@ public:
   Eneq &operator=(const Eneq &);
   Eneq(ExpNum *p1, ExpNum *p2);
   ~Eneq();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual Eneq *clone() const;
   void swap(Eneq &);
 };
@@ -607,7 +612,7 @@ public:
   Elt &operator=(const Elt &);
   Elt(ExpNum *p1, ExpNum *p2);
   ~Elt();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual Elt *clone() const;
   void swap(Elt &);
 };
@@ -622,7 +627,7 @@ public:
   Egt &operator=(const Egt &);
   Egt(ExpNum *p1, ExpNum *p2);
   ~Egt();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual Egt *clone() const;
   void swap(Egt &);
 };
@@ -637,7 +642,7 @@ public:
   Ele &operator=(const Ele &);
   Ele(ExpNum *p1, ExpNum *p2);
   ~Ele();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual Ele *clone() const;
   void swap(Ele &);
 };
@@ -652,7 +657,7 @@ public:
   Ege &operator=(const Ege &);
   Ege(ExpNum *p1, ExpNum *p2);
   ~Ege();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual Ege *clone() const;
   void swap(Ege &);
 };
@@ -667,7 +672,7 @@ public:
   OrExp &operator=(const OrExp &);
   OrExp(ExpBool *p1, ExpBool *p2);
   ~OrExp();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual OrExp *clone() const;
   void swap(OrExp &);
 };
@@ -682,7 +687,7 @@ public:
   AndExp &operator=(const AndExp &);
   AndExp(ExpBool *p1, ExpBool *p2);
   ~AndExp();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual AndExp *clone() const;
   void swap(AndExp &);
 };
@@ -697,7 +702,7 @@ public:
   EStrEq &operator=(const EStrEq &);
   EStrEq(ExpStr *p1, ExpStr *p2);
   ~EStrEq();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual EStrEq *clone() const;
   void swap(EStrEq &);
 };
@@ -712,7 +717,7 @@ public:
   EStrNeq &operator=(const EStrNeq &);
   EStrNeq(ExpStr *p1, ExpStr *p2);
   ~EStrNeq();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual EStrNeq *clone() const;
   void swap(EStrNeq &);
 };
@@ -726,7 +731,7 @@ public:
   NotExp &operator=(const NotExp &);
   NotExp(ExpBool *p1);
   ~NotExp();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual NotExp *clone() const;
   void swap(NotExp &);
 };
@@ -739,7 +744,7 @@ public:
   TrueVal &operator=(const TrueVal &);
   TrueVal();
   ~TrueVal();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual TrueVal *clone() const;
   void swap(TrueVal &);
 };
@@ -752,14 +757,14 @@ public:
   FalseVal &operator=(const FalseVal &);
   FalseVal();
   ~FalseVal();
-  virtual void accept(Visitor *v);
+  virtual bool accept(Visitor *v);
   virtual FalseVal *clone() const;
   void swap(FalseVal &);
 };
 
 
 
-class ListStm : public Visitable, public std::vector<Stm*>
+class ListStm : public Visitable<void>, public std::vector<Stm*>
 {
 public:
   virtual void accept(Visitor *v);

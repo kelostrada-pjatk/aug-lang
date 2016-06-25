@@ -23,6 +23,16 @@ int main(int argc, char ** argv)
   if (parse_tree)
   {
     printf("\nParse Succesful!\n");
+    printf("\nInterpreting code:\n");
+
+    Interpreter *interpreter = new Interpreter();
+    int result = interpreter->run(parse_tree);
+
+    if (result == 0) {
+      printf("\nSuccess\n");
+    } else {
+      printf("\nError: %d\n", result);
+    }
     return 0;
   }
   return 1;

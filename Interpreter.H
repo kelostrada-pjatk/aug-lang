@@ -8,6 +8,8 @@
 class Interpreter : public Visitor
 {
 public:
+  int run(Visitable<void>* v);
+
   void visitProg(Prog* p);
   void visitStm(Stm* p);
   void visitExpBool(ExpBool* p);
@@ -24,41 +26,46 @@ public:
   void visitStmOutputNum(StmOutputNum* p);
   void visitStmOutputStr(StmOutputStr* p);
   void visitStmExit(StmExit* p);
-  void visitEeq(Eeq* p);
-  void visitEneq(Eneq* p);
-  void visitElt(Elt* p);
-  void visitEgt(Egt* p);
-  void visitEle(Ele* p);
-  void visitEge(Ege* p);
-  void visitEMinus(EMinus* p);
-  void visitEAdd(EAdd* p);
-  void visitESub(ESub* p);
-  void visitEMul(EMul* p);
-  void visitEDiv(EDiv* p);
-  void visitEMod(EMod* p);
-  void visitEInt(EInt* p);
-  void visitENumVar(ENumVar* p);
-  void visitStmReadInt(StmReadInt* p);
-  void visitStmLength(StmLength* p);
-  void visitStmPosition(StmPosition* p);
-  void visitStmConcat(StmConcat* p);
-  void visitStmSubstr(StmSubstr* p);
-  void visitEStr(EStr* p);
-  void visitEStrVar(EStrVar* p);
-  void visitStmReadStr(StmReadStr* p);
-  void visitOrExp(OrExp* p);
-  void visitAndExp(AndExp* p);
-  void visitEStrEq(EStrEq* p);
-  void visitEStrNeq(EStrNeq* p);
-  void visitNotExp(NotExp* p);
-  void visitTrueVal(TrueVal* p);
-  void visitFalseVal(FalseVal* p);
+
+  bool visitEeq(Eeq* p);
+  bool visitEneq(Eneq* p);
+  bool visitElt(Elt* p);
+  bool visitEgt(Egt* p);
+  bool visitEle(Ele* p);
+  bool visitEge(Ege* p);
+
+  Integer visitEMinus(EMinus* p);
+  Integer visitEAdd(EAdd* p);
+  Integer visitESub(ESub* p);
+  Integer visitEMul(EMul* p);
+  Integer visitEDiv(EDiv* p);
+  Integer visitEMod(EMod* p);
+  Integer visitEInt(EInt* p);
+  Integer visitENumVar(ENumVar* p);
+  Integer visitStmReadInt(StmReadInt* p);
+  Integer visitStmLength(StmLength* p);
+  Integer visitStmPosition(StmPosition* p);
+
+  String visitStmConcat(StmConcat* p);
+  String visitStmSubstr(StmSubstr* p);
+  String visitEStr(EStr* p);
+  String visitEStrVar(EStrVar* p);
+  String visitStmReadStr(StmReadStr* p);
+
+  bool visitOrExp(OrExp* p);
+  bool visitAndExp(AndExp* p);
+  bool visitEStrEq(EStrEq* p);
+  bool visitEStrNeq(EStrNeq* p);
+  bool visitNotExp(NotExp* p);
+  bool visitTrueVal(TrueVal* p);
+  bool visitFalseVal(FalseVal* p);
+
   void visitListStm(ListStm* p);
 
-  void visitInteger(Integer i);
+  Integer visitInteger(Integer i);
   void visitDouble(Double d);
   void visitChar(Char c);
-  void visitString(String s);
+  String visitString(String s);
   void visitIdent(String s);
 
 };
