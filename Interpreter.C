@@ -6,6 +6,9 @@
 
 #include "Interpreter.H"
 #include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+using namespace std;
 
 int Interpreter::run(Visitable<void> *v)
 {
@@ -24,7 +27,6 @@ void Interpreter::visitProgram(Program *program)
   /* Code For Program Goes Here */
 
   if (program->liststm_) program->liststm_->accept(this);
-
 }
 
 void Interpreter::visitStmAssignInt(StmAssignInt *stmassignint)
@@ -34,6 +36,7 @@ void Interpreter::visitStmAssignInt(StmAssignInt *stmassignint)
   visitIdent(stmassignint->ident_);
   stmassignint->expnum_->accept(this);
 
+  // TODO: poprawić
 }
 
 void Interpreter::visitStmAssignStr(StmAssignStr *stmassignstr)
@@ -43,43 +46,45 @@ void Interpreter::visitStmAssignStr(StmAssignStr *stmassignstr)
   visitIdent(stmassignstr->ident_);
   stmassignstr->expstr_->accept(this);
 
+  // TODO: poprawić
 }
 
 void Interpreter::visitStmIf(StmIf *stmif)
 {
   /* Code For StmIf Goes Here */
 
-  stmif->expbool_->accept(this);
-  stmif->stm_->accept(this);
-
+  if (stmif->expbool_->accept(this)) {
+    stmif->stm_->accept(this);
+  }
 }
 
 void Interpreter::visitStmIfElse(StmIfElse *stmifelse)
 {
   /* Code For StmIfElse Goes Here */
 
-  stmifelse->expbool_->accept(this);
-  stmifelse->stm_1->accept(this);
-  stmifelse->stm_2->accept(this);
-
+  if (stmifelse->expbool_->accept(this)) {
+    stmifelse->stm_1->accept(this);
+  } else {
+    stmifelse->stm_2->accept(this);
+  }
 }
 
 void Interpreter::visitStmWhileFirst(StmWhileFirst *stmwhilefirst)
 {
   /* Code For StmWhileFirst Goes Here */
 
-  stmwhilefirst->expbool_->accept(this);
-  stmwhilefirst->stm_->accept(this);
-
+  while (stmwhilefirst->expbool_->accept(this)) {
+    stmwhilefirst->stm_->accept(this);
+  }
 }
 
 void Interpreter::visitStmWhileSecond(StmWhileSecond *stmwhilesecond)
 {
   /* Code For StmWhileSecond Goes Here */
 
-  stmwhilesecond->stm_->accept(this);
-  stmwhilesecond->expbool_->accept(this);
-
+  do {
+    stmwhilesecond->stm_->accept(this);
+  } while (stmwhilesecond->expbool_->accept(this));
 }
 
 void Interpreter::visitStmBlock(StmBlock *stmblock)
@@ -87,7 +92,6 @@ void Interpreter::visitStmBlock(StmBlock *stmblock)
   /* Code For StmBlock Goes Here */
 
   stmblock->liststm_->accept(this);
-
 }
 
 void Interpreter::visitStmOutputNum(StmOutputNum *stmoutputnum)
@@ -100,7 +104,6 @@ void Interpreter::visitStmOutputNum(StmOutputNum *stmoutputnum)
 void Interpreter::visitStmOutputStr(StmOutputStr *stmoutputstr)
 {
   /* Code For StmOutputStr Goes Here */
-
   String s = stmoutputstr->expstr_->accept(this);
   printf("%s\n", s.c_str());
 }
@@ -108,8 +111,7 @@ void Interpreter::visitStmOutputStr(StmOutputStr *stmoutputstr)
 void Interpreter::visitStmExit(StmExit *stmexit)
 {
   /* Code For StmExit Goes Here */
-
-
+  exit(0);
 }
 
 Integer Interpreter::visitEMinus(EMinus *eminus)
@@ -117,7 +119,6 @@ Integer Interpreter::visitEMinus(EMinus *eminus)
   /* Code For EMinus Goes Here */
 
   return -eminus->expnum_->accept(this);
-
 }
 
 Integer Interpreter::visitEAdd(EAdd *eadd)
@@ -176,52 +177,52 @@ Integer Interpreter::visitStmReadInt(StmReadInt *stmreadint)
 {
   /* Code For StmReadInt Goes Here */
 
-  // TODO: poprawić
-  return 0;
+  Integer i;
+  cin >> i;
+  return i;
 }
 
 Integer Interpreter::visitStmLength(StmLength *stmlength)
 {
   /* Code For StmLength Goes Here */
 
-  stmlength->expstr_->accept(this);
-
-  // TODO: poprawić
-  return 0;
+  return stmlength->expstr_->accept(this).length();
 }
 
 Integer Interpreter::visitStmPosition(StmPosition *stmposition)
 {
   /* Code For StmPosition Goes Here */
 
-  stmposition->expstr_1->accept(this);
-  stmposition->expstr_2->accept(this);
+  String haystack = stmposition->expstr_1->accept(this);
+  String needle = stmposition->expstr_2->accept(this);
 
-  // TODO: poprawić
-  return 0;
+  return haystack.find(needle) + 1; 
 }
 
 String Interpreter::visitStmConcat(StmConcat *stmconcat)
 {
   /* Code For StmConcat Goes Here */
 
-  stmconcat->expstr_1->accept(this);
-  stmconcat->expstr_2->accept(this);
-
-  //TODO: poprawić
-  return "";
+  return stmconcat->expstr_1->accept(this) + stmconcat->expstr_2->accept(this);
 }
 
 String Interpreter::visitStmSubstr(StmSubstr *stmsubstr)
 {
   /* Code For StmSubstr Goes Here */
 
-  stmsubstr->expstr_->accept(this);
-  stmsubstr->expnum_1->accept(this);
-  stmsubstr->expnum_2->accept(this);
+  String str = stmsubstr->expstr_->accept(this);
+  Integer pos = stmsubstr->expnum_1->accept(this);
+  Integer len = stmsubstr->expnum_2->accept(this);
 
-  // TODO: poprawić
-  return "";
+  if (pos < 1 || pos > str.length()) {
+    return "";
+  }
+
+  if (pos + len - 1 > str.length()) {
+    return str.substr(pos - 1);
+  }
+
+  return str.substr(pos - 1, len);
 }
 
 String Interpreter::visitEStr(EStr *estr)
@@ -245,8 +246,9 @@ String Interpreter::visitStmReadStr(StmReadStr *stmreadstr)
 {
   /* Code For StmReadStr Goes Here */
 
-  // TODO: poprawić
-  return "";
+  String s;
+  cin >> s;
+  return s;
 }
 
 bool Interpreter::visitEeq(Eeq *eeq)
@@ -309,22 +311,14 @@ bool Interpreter::visitEStrEq(EStrEq *estreq)
 {
   /* Code For EStrEq Goes Here */
 
-  estreq->expstr_1->accept(this);
-  estreq->expstr_2->accept(this);
-
-  // TODO: poprawić
-  return false;
+  return estreq->expstr_1->accept(this) == estreq->expstr_2->accept(this);
 }
 
 bool Interpreter::visitEStrNeq(EStrNeq *estrneq)
 {
   /* Code For EStrNeq Goes Here */
 
-  estrneq->expstr_1->accept(this);
-  estrneq->expstr_2->accept(this);
-
-  // TODO: poprawić
-  return false;
+  return estrneq->expstr_1->accept(this) != estrneq->expstr_2->accept(this);
 }
 
 bool Interpreter::visitNotExp(NotExp *notexp)
