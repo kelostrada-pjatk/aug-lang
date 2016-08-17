@@ -42,8 +42,7 @@ void Interpreter::visitStmAssignInt(StmAssignInt *stmassignint)
   Integer value = stmassignint->expnum_->accept(this);
 
   if (strVars.find(ident) != strVars.end()) {
-    cout << "Variable " << ident << " is already declared as String" << endl;
-    exit(-1);
+    strVars.erase(ident);
   }
 
   numVars[ident] = value;
@@ -57,8 +56,7 @@ void Interpreter::visitStmAssignStr(StmAssignStr *stmassignstr)
   String value = stmassignstr->expstr_->accept(this);
 
   if (numVars.find(ident) != numVars.end()) {
-    cout << "Variable " << ident << " is already declared as Number" << endl;
-    exit(-1);
+    numVars.erase(ident);
   }
 
   strVars[ident] = value;
@@ -117,20 +115,6 @@ void Interpreter::visitStmOutput(StmOutput *stmoutput)
 
   cout << s << endl;
 }
-
-/*
-void Interpreter::visitStmOutputNum(StmOutputNum *stmoutputnum)
-{
-  Integer i = stmoutputnum->expnum_->accept(this);
-  printf("%d\n", i);
-}
-
-void Interpreter::visitStmOutputStr(StmOutputStr *stmoutputstr)
-{
-  String s = stmoutputstr->expstr_->accept(this);
-  printf("%s\n", s.c_str());
-}
-*/
 
 void Interpreter::visitStmExit(StmExit *stmexit)
 {

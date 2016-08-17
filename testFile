@@ -2,8 +2,10 @@ print("Simple Calculator!");
 
 while true do 
 begin
-  print("Choose operation: + - * / %");
+  print("Choose operation: + - * / % Q(uit)");
   op := readstr;
+
+  if (op == "Q" or op == "q") then exit;
 
   print("Input two numbers");
   a := readint;
